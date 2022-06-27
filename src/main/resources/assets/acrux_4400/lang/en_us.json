@@ -1,4 +1,7 @@
 {
     "block.acrux_4400.backplane": "Backplane",
-    "block.acrux_4400.cpu": "Central Processing Unit"
+    "block.acrux_4400.cpu": "Central Processing Unit",
+    "block.acrux_4400.disk_drive": "Disk Drive",
+    "block.acrux_4400.monitor": "Monitor",
+    "block.acrux_4400.ram_module": "8K Ram Module"
 }

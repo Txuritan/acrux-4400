@@ -1,0 +1,5 @@
+{
+    "variants": {
+        "": { "model": "acrux_4400:block/disk_drive" }
+    }
+}

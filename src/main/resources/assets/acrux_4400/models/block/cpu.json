@@ -1,8 +1,19 @@
 {
-    "parent": "minecraft:block/orientable",
+    "parent": "minecraft:block/cube",
+    "display": {
+        "firstperson_righthand": {
+            "rotation": [ 0, 135, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        }
+    },
     "textures": {
-        "front": "minecraft:block/stone",
-        "side": "minecraft:block/granite",
-        "top": "minecraft:block/andesite"
+        "particle": "acrux_4400:block/cpu_front",
+        "north": "acrux_4400:block/cpu_front",
+        "south": "acrux_4400:block/cpu_back",
+        "east": "acrux_4400:block/cpu_right",
+        "west": "acrux_4400:block/cpu_left",
+        "down": "acrux_4400:block/cpu_bottom",
+        "up": "acrux_4400:block/cpu_top"
     }
 }

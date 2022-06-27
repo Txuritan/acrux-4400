@@ -1,5 +1,6 @@
 package txuritan.acrux4400.blocks;
 
+import txuritan.acrux4400.Acrux4400;
 import txuritan.acrux4400.utils.WorldUtils;
 
 import net.minecraft.block.*;
@@ -78,7 +79,7 @@ public class BackplaneBlock extends HorizontalFacingBlock {
             return new ItemStack(this);
         }
 
-        return new ItemStack(Blocks.GRANITE);
+        return new ItemStack(Acrux4400.RAM_MODULE_BLOCK);
     }
 
     // Handle the player placing a backplane module
@@ -89,7 +90,7 @@ public class BackplaneBlock extends HorizontalFacingBlock {
 
         ItemStack itemStack = player.getStackInHand(hand);
         Item item = itemStack.getItem();
-        if (item == Blocks.GRANITE.asItem()) {
+        if (item == Acrux4400.RAM_MODULE_BLOCK.asItem()) {
             if (!player.isCreative()) {
                 itemStack.decrement(1);
             }
@@ -112,7 +113,7 @@ public class BackplaneBlock extends HorizontalFacingBlock {
             case 1: {
                 if (!world.isClient) {
                     if (!player.isCreative()) {
-                        WorldUtils.dropItemStack((ServerWorld) world, pos, Blocks.GRANITE.asItem().getDefaultStack());
+                        WorldUtils.dropItemStack((ServerWorld) world, pos, Acrux4400.RAM_MODULE_BLOCK.asItem().getDefaultStack());
                     }
 
                     world.playSound(player, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
