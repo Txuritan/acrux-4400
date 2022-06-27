@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": { "model": "acrux_4400:block/monitor" },
+        "facing=east": { "model": "acrux_4400:block/monitor", "y": 90 },
+        "facing=south": { "model": "acrux_4400:block/monitor", "y": 180 },
+        "facing=west": { "model": "acrux_4400:block/monitor", "y": 270 }
+    }
+}

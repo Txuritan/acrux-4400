@@ -1,15 +1,15 @@
 {
     "variants": {
         "facing=north,state=0": { "model": "acrux_4400:block/backplane" },
-        "facing=north,state=1": { "model": "acrux_4400:block/backplane" },
+        "facing=north,state=1": { "model": "acrux_4400:block/backplane_ram_module" },
 
         "facing=east,state=0": { "model": "acrux_4400:block/backplane", "y":  90 },
-        "facing=east,state=1": { "model": "acrux_4400:block/backplane", "y":  90 },
+        "facing=east,state=1": { "model": "acrux_4400:block/backplane_ram_module", "y":  90 },
     
         "facing=south,state=0": { "model": "acrux_4400:block/backplane", "y":  180 },
-        "facing=south,state=1": { "model": "acrux_4400:block/backplane", "y":  180 },
+        "facing=south,state=1": { "model": "acrux_4400:block/backplane_ram_module", "y":  180 },
     
         "facing=west,state=0": { "model": "acrux_4400:block/backplane", "y":  270 },
-        "facing=west,state=1": { "model": "acrux_4400:block/backplane", "y":  270 }
+        "facing=west,state=1": { "model": "acrux_4400:block/backplane_ram_module", "y":  270 }
     }
 }

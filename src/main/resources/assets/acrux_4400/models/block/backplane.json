@@ -1,8 +1,22 @@
 {
-    "parent": "acrux_4400:block/backplane_base",
+    "parent": "minecraft:block/thin_block",
     "textures": {
         "bottom": "minecraft:block/andesite",
         "top": "minecraft:block/stone",
-        "side": "minecraft:block/granite"
-    }
+        "side": "minecraft:block/granite",
+        "particle": "minecraft:block/granite"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 0 ],
+            "to": [ 16, 2, 16 ],
+            "faces": {
+                "down":  { "uv": [ 0,  0, 16, 16 ], "texture": "#bottom", "cullface": "down" },
+                "up":    { "uv": [ 0,  0, 16, 16 ], "texture": "#top" },
+                "north": { "uv": [ 0, 15, 16, 16 ], "texture": "#side", "cullface": "north" },
+                "south": { "uv": [ 0, 15, 16, 16 ], "texture": "#side", "cullface": "south" },
+                "west":  { "uv": [ 0, 15, 16, 16 ], "texture": "#side", "cullface": "west" },
+                "east":  { "uv": [ 0, 15, 16, 16 ], "texture": "#side", "cullface": "east" }
+            }
+        }
+    ]
 }
