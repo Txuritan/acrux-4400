@@ -1,0 +1,8 @@
+{
+    "parent": "acrux_4400:block/backplane_base",
+    "textures": {
+        "bottom": "minecraft:block/andesite",
+        "top": "minecraft:block/stone",
+        "side": "minecraft:block/granite"
+    }
+}
