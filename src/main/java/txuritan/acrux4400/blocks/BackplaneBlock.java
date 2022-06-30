@@ -3,6 +3,8 @@ package txuritan.acrux4400.blocks;
 import txuritan.acrux4400.Acrux4400;
 import txuritan.acrux4400.utils.WorldUtils;
 
+import com.google.common.collect.BiMap;
+
 import net.minecraft.block.*;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,15 +31,22 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.event.GameEvent;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.Map;
+import java.util.Objects;
+
 @SuppressWarnings("deprecation")
 public class BackplaneBlock extends HorizontalFacingBlock {
     public static final IntProperty STATE = IntProperty.of("state", 0, 1);
 
-    protected static final VoxelShape[] SHAPE = new VoxelShape[]{
-        // Default state (0), empty backplane
-        Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D),
-        VoxelShapes.fullCube()
-    };
+    protected static final Map<Integer, Pair<VoxelShape, Block>> STATE_TO_BLOCK = Map.of(
+        0, Pair.of(Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), null),
+        1, Pair.of(VoxelShapes.fullCube(), Acrux4400.RAM_MODULE_BLOCK)
+    );
+    protected static final Map<Block, Integer> BLOCK_TO_STATE = Map.of(
+        Acrux4400.RAM_MODULE_BLOCK, 1
+    );
 
     public BackplaneBlock(Settings settings) {
         super(settings);
@@ -54,7 +63,7 @@ public class BackplaneBlock extends HorizontalFacingBlock {
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return SHAPE[state.get(STATE)];
+        return STATE_TO_BLOCK.get(state.get(STATE)).getLeft();
     }
 
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
@@ -75,11 +84,10 @@ public class BackplaneBlock extends HorizontalFacingBlock {
     }
 
     public ItemStack getPickStack(BlockView world, BlockPos pos, BlockState state) {
-        if (state.get(STATE) == 0) {
-            return new ItemStack(this);
-        }
+        Block block = STATE_TO_BLOCK.get(state.get(STATE)).getRight();
 
-        return new ItemStack(Acrux4400.RAM_MODULE_BLOCK);
+        return new ItemStack(Objects.requireNonNullElse(block, this));
+
     }
 
     // Handle the player placing a backplane module
@@ -90,13 +98,13 @@ public class BackplaneBlock extends HorizontalFacingBlock {
 
         ItemStack itemStack = player.getStackInHand(hand);
         Item item = itemStack.getItem();
-        if (item == Acrux4400.RAM_MODULE_BLOCK.asItem()) {
+        if (BLOCK_TO_STATE.containsKey(item)) {
             if (!player.isCreative()) {
                 itemStack.decrement(1);
             }
 
             world.playSound(player, pos, SoundEvents.BLOCK_METAL_PLACE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-            world.setBlockState(pos, state.with(STATE, 1));
+            world.setBlockState(pos, state.with(STATE, BLOCK_TO_STATE.get(item)));
             world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
             player.incrementStat(Stats.USED.getOrCreateStat(item));
         }
@@ -105,25 +113,23 @@ public class BackplaneBlock extends HorizontalFacingBlock {
     }
 
     // Custom handler for drop the one or two blocks that make up a backplane
-    @SuppressWarnings("DuplicateBranchesInSwitch")
     public boolean beforeBreak(World world, PlayerEntity player, BlockPos pos, BlockState state) {
-        switch (state.get(STATE)) {
-            case 0:
-                return true;
-            case 1: {
-                if (!world.isClient) {
-                    if (!player.isCreative()) {
-                        WorldUtils.dropItemStack((ServerWorld) world, pos, Acrux4400.RAM_MODULE_BLOCK.asItem().getDefaultStack());
-                    }
-
-                    world.playSound(player, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
-                    world.setBlockState(pos, state.with(STATE, 0));
-                    world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-                }
-                return false;
-            }
-            default:
-                return true;
+        if (state.get(STATE) == 0) {
+            return true;
         }
+
+        if (!world.isClient) {
+            if (!player.isCreative()) {
+                Block block = STATE_TO_BLOCK.get(state.get(STATE)).getRight();
+
+                WorldUtils.dropItemStack((ServerWorld) world, pos, block.asItem().getDefaultStack());
+            }
+
+            world.playSound(player, pos, SoundEvents.BLOCK_METAL_BREAK, SoundCategory.BLOCKS, 1.0f, 1.0f);
+            world.setBlockState(pos, state.with(STATE, 0));
+            world.emitGameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+        }
+
+        return true;
     }
 }
